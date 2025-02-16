@@ -7,7 +7,7 @@
 ## 🔥 맡은 역할
 ### Player 및 Monster 구현
 - **기사(Knight) / 궁수(Archer) 캐릭터 구현** (근거리/원거리 전투)
-- **전투 시스템** (공격, 회피, 스킬 등) 개발
+- **전투 시스템** 개발
 - **체력 및 경험치 UI** 연동
 - **몬스터 AI 구현** 및 AI 전투 패턴 적용
 - **AnimInstance 제작** 및 캐릭터 애니메이션 연동
@@ -52,28 +52,36 @@ AActor
 ```
 ## ⚠️ 오류 상황과 해결 방안
 
-### 1️⃣ GitHub 충돌 발생 및 컴파일 에러 ❌  
-🔍 **원인:** 소통 부족 으로 브랜치 충돌 및 미숙한 Github사용으로 인한 올바르지 않은 머지로 인한 컴파일 에러</br></br>
-✅ **해결 방법:** 
-- 주기적인 회의를 통해 서로 진행상황을 공유하며 Github사용
-- Main프로젝트에 Merge하기전 Develop branch에 따로 합쳐 버그테스트후 Main에 Merge</br>
+### 1️⃣ GitHub 충돌 및 컴파일 에러 ❌  
+🔍 **원인**</br>
+>소통 부족으로 인한 브랜치 충돌 또는 잘못된 병합으로 인한 컴파일 오류 발생  
 
-### 2️⃣ 사운드 또는 이펙트가 재생되지 않음 🔊🚫  
-🔍 **원인:** 사운드/이펙트가 정리되지 않아 이상한 경로 추적</br> </br>
-✅ **해결 방법:**
-- `AMyEffectManager` 및 `AMySoundManager`를 통해 관리 
-- 사운드 및 이펙트 경로가 올바른지 확인 </br>
+✅ **해결 방법**  
+>주기적인 회의를 통해 진행 상황을 공유하고 GitHub 활용 방식 조율  
+>`Develop` 브랜치에서 병합 및 버그 테스트 후 `Main` 브랜치로 반영  
 
-### 3️⃣ 몬스터 AI가 정상적으로 동작하지 않음 👾⚠️  
-🔍 **원인:** `BTTask`와 `Behavior Tree`가 올바르게 연결되지 않음</br>  
-✅ **해결 방법:**  
-- `BTTask`와 `AIController`관련 코드 수정
-- AI `BehaviorTree` 및 `Blackboard` 설정 확인 </br> 
+### 2️⃣ 사운드 및 이펙트 미재생 🔊🚫  
+🔍 **원인**  
+>사운드/이펙트의 경로 설정 오류 또는 정리되지 않은 데이터  
 
-### 4️⃣ 플레이어 애니메이션이 적용되지 않음 🎭🚫  </br>
-🔍 **원인:** `AnimInstance`과 `Notify`의 오류</br></br>
-✅ **해결 방법:**  
-- `AnimInstance의 Nortify`와 `Deligate` 바인드 설정 확인</br>
+✅ **해결 방법**  
+>`AMyEffectManager` 및 `AMySoundManager`를 통해 중앙 관리  
+>경로 설정 및 리소스 파일 유효성 점검  
+
+### 3️⃣ 몬스터 AI 오작동 👾⚠️  
+🔍 **원인**  
+>`BTTask` 및 `Behavior Tree` 연결 오류  
+
+✅ **해결 방법**  
+>`BTTask` 및 `AIController` 관련 코드 수정  
+>`BehaviorTree` 및 `Blackboard` 설정 확인  
+
+### 4️⃣ 플레이어 애니메이션 적용 오류 🎭🚫  
+🔍 **원인**  
+>`AnimInstance` 및 `Notify` 설정 오류  
+
+✅ **해결 방법**  
+>`AnimInstance`의 `Notify` 및 `Delegate` 바인드 설정 확인 및 수정  
 
 ## 🚀 프로젝트를 통해 배운 점
 1. **C++ 기반 객체 지향 설계** 🏗️
