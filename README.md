@@ -3,38 +3,8 @@
 
 
 ## 📝 개요
-본 프로젝트는 2주일 동안 **TEAM_YPK**에서 개발한 언리얼 엔진 기반 3D 액션 게임입니다. 🎮  
+본 프로젝트는 2주 동안 **TEAM_YPK**에서 개발한 언리얼 엔진 기반 3D 액션 게임입니다. 🎮  
 3인 팀으로 진행한 프로젝트이며, 깃허브를 활용하여 협업을 진행했습니다. 주요 클래스 및 구조를 C++ 코드 기반으로 설명합니다.
-
-## 🔥 맡은 역할
-### Player 및 Monster 구현
-- **기사(Knight) / 궁수(Archer) 캐릭터 구현** (근거리/원거리 전투)
-- **전투 시스템** 개발
-- **체력 및 경험치 UI** 연동
-- **몬스터 AI 구현** 및 **AI을 활용한 파티 시스템 구현** 전투 패턴 적용
-- **AnimInstance 제작** 및 캐릭터 애니메이션 연동
-- 팀원이 제작한 코드와 연동확인 및 수정
-
-### Boss Monster 구현
-- **보스 등장 연출(Scene) 구현**
-- **Behavior Tree 설계 및 AI 패턴 적용**
-- **AggroComponent를 이용한 공격 대상 결정 로직 개발**
-
-### Component 및 Manager 시스템 개발
-- **사운드 및 이펙트 관리** (Object Pooling 기법 활용)
-- **Stat, Aggro를 Component로 설계하여 객체의 기능 모듈화**
-
-## 🎯 프로젝트 기획
-- 🏰 **기사(Knight)**와 🏹 **궁수(Archer)**를 선택하여 플레이하는 3D 액션 RPG
-- 👾 다양한 **몬스터 및 보스 몬스터**와의 전투 구현
-- 🛒 **NPC와 상호작용을 통한 상점 시스템** 구현
-- ✨ **스킬 이펙트 및 사운드를 활용한 타격감 있는 전투 시스템**
-- 🎭 **게임 진행 및 스테이지 관리 기능** 구현
-- 🔗 **GitHub를 이용한 협업 및 코드 리뷰 체계 구축**
-- 💡 **C++의 객체 지향적 특징 활용**
-- ⚙️ **컴포넌트 및 싱글톤 패턴을 활용한 매니저 시스템 구현**
-- 🧠 **Unreal Engine의 AI, UI, Animation 기능 활용 및 응용**
-- ⚙️ **오브젝트 풀링**을 사용해 최적화
 
 ## 🔍 클래스 구조도
 ```
@@ -49,10 +19,31 @@ AActor
  │   │   ├── AMyBaseMonster (일반 몬스터)
  │   │   ├── AMyBossMonster (보스 몬스터)
  ├── AGameModeBase (게임 진행 관리)
-     ├── AMyGameModeBase (일반 게임 모드 클래스)
+     ├── AMyGameModeBase (사냥 게임 모드 클래스)
      ├── AMyBossGameModeBase (보스 게임 모드 클래스)
 
 ```
+
+## 🔥 맡은 역할
+### Player 및 Monster 구현
+- **기사(Knight) / 궁수(Archer) 캐릭터 구현** (근거리/원거리 캐릭터)
+- **체력 및 경험치 UI** 연동
+- **몬스터 AI 구현** 및 전투 패턴 적용
+- **Item 및 inventoryUI**구현
+- **AnimInstance 제작** 및 캐릭터 애니메이션 연동
+- Npc의 inventory와 Player의 invnetory연동 및 수정
+
+### Boss Monster 구현
+- **보스 등장 연출(Scene) 구현**
+- **AI을 활용한 파티 시스템 구현** 전투 패턴 적용
+- **Behavior Tree 설계 및 AI 패턴 적용**
+- **AggroComponent를 이용한 공격 대상 결정 로직 개발**
+
+### Component 및 Manager 시스템 개발
+- **사운드 및 이펙트 관리** (Object Pooling 기법 활용)
+- **Stat, Aggro를 Component로 설계하여 객체의 기능 모듈화**
+
+
 ## ⚠️ 오류 상황과 해결 방안
 
 ### 1️⃣ GitHub 충돌 및 컴파일 에러 ❌  
