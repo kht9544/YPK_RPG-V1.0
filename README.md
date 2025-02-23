@@ -19,8 +19,13 @@ AActor
  │   │   ├── AMyBaseMonster (일반 몬스터)
  │   │   ├── AMyBossMonster (보스 몬스터)
  ├── AGameModeBase (게임 진행 관리)
-     ├── AMyGameModeBase (사냥 게임 모드 클래스)
-     ├── AMyBossGameModeBase (보스 게임 모드 클래스)
+ |   ├── AMyGameModeBase (사냥 게임 모드 클래스)
+ |   ├── AMyBossGameModeBase (보스 게임 모드 클래스)
+ ├── ABaseAIContorller (AIController 베이스)
+ |   ├── AMyPlayerAIController (동료 AIController)
+ |   ├── AMyMonsterAIController (몬스터 베이스 AIController)
+ |   |   ├── AMyNormalMonsterController (일반 몬스터 AIController)
+ |   |   ├── AMyBossAIController (보스 몬스터 AIController)
 
 ```
 
@@ -31,13 +36,33 @@ AActor
 - **몬스터 AI 구현** 및 전투 패턴 적용
 - **Item 및 inventoryUI**구현
 - **AnimInstance 제작** 및 캐릭터 애니메이션 연동
-- Npc의 inventory와 Player의 invnetory연동 및 수정
+- Npc의 inventory와 Player의 inventory연동 및 수정
 
 ### Boss Monster 구현
 - **보스 등장 연출(Scene) 구현**
 - **AI을 활용한 파티 시스템 구현** 전투 패턴 적용
-- **Behavior Tree 설계 및 AI 패턴 적용**
+- Phase 1,2 **Behavior Tree 설계 및 AI 패턴 적용**
 - **AggroComponent를 이용한 공격 대상 결정 로직 개발**
+```
+AMyPlayer* UMyAggroComponent::GetTopAggroTarget() const
+{
+    AMyPlayer* TopAggroActor = nullptr;
+    float MaxDamage = 0.f;
+
+    for (const auto& AggroEntry : _playerParty)
+    {
+        if (AggroEntry.Key->GetStatCom()->IsDead())
+            continue;
+
+        if (AggroEntry.Value > MaxDamage)
+        {
+            MaxDamage = AggroEntry.Value;
+            TopAggroActor = AggroEntry.Key;
+        }
+    }
+    return TopAggroActor;
+}
+```
 
 ### Component 및 Manager 시스템 개발
 - **사운드 및 이펙트 관리** (Object Pooling 기법 활용)
@@ -89,6 +114,7 @@ AActor
 3. **게임 시스템 설계 및 구현** 🛠️
    - Object Pooling 기법을 활용한 최적화된 이펙트 및 사운드 관리
    - Component를 활용해 객체별로 독립적인 데이터 관리
+   - Delegate사용으로 이벤트 처리
    - AI 기반 파티 시스템과 몬스터 공격 및 보스 몬스터 특수 패턴 구현
    - UI기능 구현과 Deligate 활용
    - Unreal을 이용한 Anim제작
