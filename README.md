@@ -35,8 +35,64 @@ AActor
 - **체력 및 경험치 UI** 연동
 - **몬스터 AI 구현** 및 전투 패턴 적용
 - **Item 및 inventoryUI**구현
-- **AnimInstance 제작** 및 캐릭터 애니메이션 연동
+- Blueprint을 이용해 **AnimInstance 제작** 및 캐릭터 애니메이션 연동
 - Npc의 inventory와 Player의 inventory연동 및 수정
+```
+//Player UI delegate 바인드
+ 
+	auto PlWidget = Cast<UMyPlayerWidget>(_screenWidget);
+	if (PlWidget)
+	{
+		       GetStatCom()->_PlHPDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlHPBar);
+         GetStatCom()->_PlEXPDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlExpBar);
+		       GetStatCom()->_PILevelDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlLevel);
+	}
+
+
+//공격 기능 및 효과 기능
+void AMyCreature::AttackHit()
+{
+	   FHitResult hitResult;
+    FCollisionQueryParams params(NAME_None, false, this);
+
+    float attackRange = 500.0f;
+    float attackRadius = 50.0f;
+
+    bool bResult = GetWorld()->SweepSingleByChannel(
+        hitResult,
+        GetActorLocation(),
+        GetActorLocation() + GetActorForwardVector() * attackRange,
+        FQuat::Identity,
+        ECollisionChannel::ECC_GameTraceChannel2,
+        FCollisionShape::MakeSphere(attackRadius),
+        params);
+
+    FVector vec = GetActorForwardVector() * attackRange;
+    FVector center = GetActorLocation() + vec * 0.5f;
+
+    FColor drawColor = FColor::Green;
+
+    if (bResult)
+    {
+        drawColor = FColor::Red;
+
+        if (hitResult.GetActor() && hitResult.GetActor()->IsValidLowLevel())
+        {
+            FDamageEvent DamageEvent;
+            hitResult.GetActor()->TakeDamage(GetStatCom()->GetAttackDamage(), DamageEvent, GetController(), this);
+
+            _hitPoint = hitResult.ImpactPoint;
+            EffectManager->Play(*GetHitParticleName(), _hitPoint);
+            SoundManager->PlaySound(*GetHitSoundName(), _hitPoint);
+        }
+    }
+    else
+    {
+        FVector missLocation = GetActorLocation();
+        SoundManager->PlaySound(*GetSwingSoundName(), missLocation);
+    }
+}
+```
 
 ### Boss Monster 구현
 - **보스 등장 연출(Scene) 구현**
@@ -44,6 +100,7 @@ AActor
 - Phase 1,2 **Behavior Tree 설계 및 AI 패턴 적용**
 - **AggroComponent를 이용한 공격 대상 결정 로직 개발**
 ```
+//Aggro
 AMyPlayer* UMyAggroComponent::GetTopAggroTarget() const
 {
     AMyPlayer* TopAggroActor = nullptr;
@@ -62,10 +119,41 @@ AMyPlayer* UMyAggroComponent::GetTopAggroTarget() const
     }
     return TopAggroActor;
 }
+
+//Decal을 이용힌 스킬 (매초 마다 일정크기 커진후 최대 크기에서 폭발)
+void AMyDecalActor::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    if (_delayTime == 0.0f || _bIsPlay == false)
+        return;
+
+    FVector curScale = GetActorScale();
+
+    if (_runTime > _delayTime && _delayTime > 0.0f)
+    {
+        _fieldAttackDelegate.Broadcast(GetActorLocation());
+        _runTime = 0.0f;
+        curScale.Y = 0.0f;
+        curScale.Z = 0.0f;
+
+        SetActorScale3D(curScale);
+        _bIsPlay = _bLoop;
+
+        return;
+    }
+
+    _runTime += DeltaTime;
+    curScale.Y = (_runTime / _delayTime) * _areaRadius;
+    curScale.Z = (_runTime / _delayTime) * _areaRadius;
+
+    SetActorScale3D(curScale);
+}
+
 ```
 
 ### Component 및 Manager 시스템 개발
-- **사운드 및 이펙트 관리** (Object Pooling 기법 활용)
+- Manager을 이용해 **사운드 및 이펙트 관리** 
 - **Stat, Aggro를 Component로 설계하여 객체의 기능 모듈화**
 
 
@@ -112,11 +200,10 @@ AMyPlayer* UMyAggroComponent::GetTopAggroTarget() const
    - 코드 리뷰를 통한 코드 품질 향상 및 유지보수성 증가
 
 3. **게임 시스템 설계 및 구현** 🛠️
-   - Object Pooling 기법을 활용한 최적화된 이펙트 및 사운드 관리
    - Component를 활용해 객체별로 독립적인 데이터 관리
    - Delegate사용으로 이벤트 처리
    - AI 기반 파티 시스템과 몬스터 공격 및 보스 몬스터 특수 패턴 구현
-   - UI기능 구현과 Deligate 활용
+   - UI기능 구현 및 연동
    - Unreal을 이용한 Anim제작
 
 4. **게임 플레이 및 사용자 경험 향상** 🎨
