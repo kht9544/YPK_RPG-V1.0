@@ -40,13 +40,13 @@ AActor
 ```
 //Player UI delegate 바인드
  
-	auto PlWidget = Cast<UMyPlayerWidget>(_screenWidget);
-	if (PlWidget)
-	{
-		       GetStatCom()->_PlHPDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlHPBar);
-         GetStatCom()->_PlEXPDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlExpBar);
-		       GetStatCom()->_PILevelDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlLevel);
-	}
+auto PlWidget = Cast<UMyPlayerWidget>(_screenWidget);
+if (PlWidget)
+{
+	GetStatCom()->_PlHPDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlHPBar);
+	GetStatCom()->_PlEXPDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlExpBar);
+	GetStatCom()->_PILevelDelegate.AddUObject(PlWidget, &UMyPlayerWidget::SetPlLevel);
+}
 
 
 //공격 기능 및 효과 기능
