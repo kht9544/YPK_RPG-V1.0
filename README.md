@@ -8,7 +8,6 @@
 
 ## 🔍 클래스 구조도
 ```
-AActor
  ├── AMyEffectManager (이펙트 관리)
  ├── AMySoundManager (사운드 관리)
  ├── AMyCreature (ACharacter 상속)
@@ -26,7 +25,16 @@ AActor
  |   ├── AMyMonsterAIController (몬스터 베이스 AIController)
  |   |   ├── AMyNormalMonsterController (일반 몬스터 AIController)
  |   |   ├── AMyBossAIController (보스 몬스터 AIController)
-
+ ├── MyItem (Item클래스 베이스)
+ |   ├── MyNPCItem (NPC 아이템)
+Component
+ ├── MyAggroComponent (보스 타겟 시스템 컴포넌트)
+ ├── MyInvenComponent (인벤토리 컴포넌트)
+ ├── MyNPCStorComponent (NPC 스토어 컴포넌트)
+ ├── MyStatComponent (Stat관련 컴포넌트)
+			.
+			.
+			.
 ```
 
 ## 🔥 맡은 역할
@@ -34,8 +42,7 @@ AActor
 - **기사(Knight) / 궁수(Archer) 캐릭터 구현** (근거리/원거리 캐릭터)
 - **체력 및 경험치 UI** 연동
 - **몬스터 AI 구현** 및 전투 패턴 적용
-- **Item 및 inventoryUI**구현
-- Blueprint을 이용해 **AnimInstance 제작** 및 캐릭터 애니메이션 연동
+- **inventoryUI**구현
 - Npc의 inventory와 Player의 inventory연동 및 수정
 ```
 //Player UI delegate 바인드
